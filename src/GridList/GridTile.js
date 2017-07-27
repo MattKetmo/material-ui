@@ -3,8 +3,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from '../utils/customPropTypes';
+import createStyleSheet from '../styles/createStyleSheet';
+import withStyles from '../styles/withStyles';
 
 export const styleSheet = createStyleSheet('MuiGridTile', theme => {
   return {
@@ -20,6 +20,7 @@ export const styleSheet = createStyleSheet('MuiGridTile', theme => {
       transform: 'translateX(-50%)',
       position: 'relative',
       left: '50%',
+      maxWidth: 'none',
     },
   };
 });
@@ -32,7 +33,7 @@ export const styleSheet = createStyleSheet('MuiGridTile', theme => {
  * </GridTile>
  * ```
  */
-export default class GridTile extends Component {
+class GridTile extends Component {
   static propTypes = {
     /**
      * Theoretically you can pass any node as children, but the main use case is to pass an img,
@@ -40,6 +41,10 @@ export default class GridTile extends Component {
      * (similar to `background-size: cover` or to `object-fit: cover`).
      */
     children: PropTypes.node.isRequired,
+    /**
+     * Useful to extend the style applied to components.
+     */
+    classes: PropTypes.object,
     /**
      * The CSS `className` of the root element.
      */
@@ -57,16 +62,16 @@ export default class GridTile extends Component {
      * Height of the tile in number of grid cells.
      */
     rows: PropTypes.number,
+    /**
+     * @ignore
+     */
+    theme: PropTypes.object,
   };
 
   static defaultProps = {
     cols: 1,
     rows: 1,
     component: 'div',
-  };
-
-  static contextTypes = {
-    styleManager: customPropTypes.muiRequired,
   };
 
   componentDidMount() {
@@ -85,7 +90,7 @@ export default class GridTile extends Component {
     if (imgEl) {
       const fit = () => {
         if (imgEl.offsetWidth < imgEl.parentNode.offsetWidth) {
-          const { theme: { direction } } = this.context.styleManager;
+          const { theme: { direction } } = this.props.theme;
           const isRtl = direction === 'rtl';
           imgEl.style.height = 'auto';
           if (isRtl) {
@@ -112,14 +117,14 @@ export default class GridTile extends Component {
   render() {
     const {
       children,
+      classes,
       className: classNameProp,
       cols, // eslint-disable-line no-unused-vars
       component: ComponentProp,
       rows, // eslint-disable-line no-unused-vars
+      theme, // eslint-disable-line no-unused-vars
       ...other
     } = this.props;
-
-    const classes = this.context.styleManager.render(styleSheet);
 
     const newChildren = React.Children.map(children, child => {
       if (child.type === 'img') {
@@ -141,3 +146,5 @@ export default class GridTile extends Component {
     );
   }
 }
+
+export default withStyles(styleSheet, { withTheme: true })(GridTile);

@@ -1,8 +1,8 @@
 // @flow weak
 
 import React from 'react';
-import { createStyleSheet } from 'material-ui/styles';
-import customPropTypes from 'material-ui/utils/customPropTypes';
+import PropTypes from 'prop-types';
+import { createStyleSheet, withStyles } from 'material-ui/styles';
 import { GridList, GridTile, GridTileTitlebar } from 'material-ui/GridList';
 import Subheader from 'material-ui/List/ListSubheader';
 import IconButton from 'material-ui/IconButton';
@@ -42,8 +42,9 @@ const styleSheet = createStyleSheet('TitlebarGridList', () => ({
  *   },
  * ];
  */
-export default function TitlebarGridList(props, context) {
-  const classes = context.styleManager.render(styleSheet);
+function TitlebarGridList(props) {
+  const classes = props.classes;
+
   return (
     <div className={classes.container}>
       <GridList cellHeight={180} className={classes.gridList}>
@@ -71,6 +72,8 @@ export default function TitlebarGridList(props, context) {
   );
 }
 
-TitlebarGridList.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
+TitlebarGridList.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
+
+export default withStyles(styleSheet)(TitlebarGridList);

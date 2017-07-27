@@ -1,8 +1,8 @@
 // @flow weak
 
 import React from 'react';
-import { createStyleSheet } from 'material-ui/styles';
-import customPropTypes from 'material-ui/utils/customPropTypes';
+import PropTypes from 'prop-types';
+import { createStyleSheet, withStyles } from 'material-ui/styles';
 import { GridList, GridTile } from 'material-ui/GridList';
 import tileData from './tileData';
 
@@ -40,8 +40,9 @@ const styleSheet = createStyleSheet('ImageGridList', () => ({
  *   },
  * ];
  */
-export default function ImageGridList(props, context) {
-  const classes = context.styleManager.render(styleSheet);
+function ImageGridList(props) {
+  const classes = props.classes;
+
   return (
     <div className={classes.container}>
       <GridList cellHeight={160} className={classes.gridList} cols={3}>
@@ -55,6 +56,8 @@ export default function ImageGridList(props, context) {
   );
 }
 
-ImageGridList.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
+ImageGridList.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
+
+export default withStyles(styleSheet)(ImageGridList);

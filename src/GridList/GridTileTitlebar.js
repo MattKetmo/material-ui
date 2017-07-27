@@ -3,8 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from '../utils/customPropTypes';
+import createStyleSheet from '../styles/createStyleSheet';
+import withStyles from '../styles/withStyles';
 
 export const styleSheet = createStyleSheet('MuiGridTileTitlebar', theme => {
   return {
@@ -69,10 +69,11 @@ export const styleSheet = createStyleSheet('MuiGridTileTitlebar', theme => {
  *  <GridTileTitlebar title="GridTile" />
  *  ```
  */
-export default function GridTileTitlebar(props, context) {
+function GridTileTitlebar(props) {
   const {
     actionIcon,
     actionPosition,
+    classes,
     className: classNameProp,
     subtitle,
     subtitleClassName: subtitleClassNameProp,
@@ -82,7 +83,6 @@ export default function GridTileTitlebar(props, context) {
     ...other
   } = props;
 
-  const classes = context.styleManager.render(styleSheet);
   const actionPos = actionIcon && actionPosition;
 
   const className = classNames(
@@ -133,6 +133,10 @@ GridTileTitlebar.propTypes = {
    */
   actionPosition: PropTypes.oneOf(['left', 'right']),
   /**
+   * Useful to extend the style applied to components.
+   */
+  classes: PropTypes.object,
+  /**
    * The CSS `className` of the root element.
    */
   className: PropTypes.string,
@@ -163,6 +167,4 @@ GridTileTitlebar.defaultProps = {
   actionPosition: 'right',
 };
 
-GridTileTitlebar.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
-};
+export default withStyles(styleSheet)(GridTileTitlebar);

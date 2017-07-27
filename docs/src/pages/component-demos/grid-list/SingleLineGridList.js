@@ -1,8 +1,8 @@
 // @flow weak
 
 import React from 'react';
-import { createStyleSheet } from 'material-ui/styles';
-import customPropTypes from 'material-ui/utils/customPropTypes';
+import PropTypes from 'prop-types';
+import { createStyleSheet, withStyles } from 'material-ui/styles';
 import { GridList, GridTile, GridTileTitlebar } from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorderIcon from 'material-ui-icons/StarBorder';
@@ -43,8 +43,9 @@ const styleSheet = createStyleSheet('SingleLineGridList', theme => ({
  *   },
  * ];
  */
-export default function SingleLineGridList(props, context) {
-  const classes = context.styleManager.render(styleSheet);
+function SingleLineGridList(props) {
+  const classes = props.classes;
+
   return (
     <div className={classes.container}>
       <GridList className={classes.gridList} cols={3.5}>
@@ -68,6 +69,8 @@ export default function SingleLineGridList(props, context) {
   );
 }
 
-SingleLineGridList.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
+SingleLineGridList.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
+
+export default withStyles(styleSheet)(SingleLineGridList);

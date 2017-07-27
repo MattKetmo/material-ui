@@ -3,8 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from '../utils/customPropTypes';
+import createStyleSheet from '../styles/createStyleSheet';
+import withStyles from '../styles/withStyles';
 
 export const styleSheet = createStyleSheet('MuiGridList', () => {
   return {
@@ -29,19 +29,18 @@ export const styleSheet = createStyleSheet('MuiGridList', () => {
  * </GridList>
  * ```
  */
-export default function GridList(props, context) {
+function GridList(props) {
   const {
     cols,
     padding,
     cellHeight,
     children,
+    classes,
     className: classNameProp,
     component: ComponentProp,
     style,
     ...other
   } = props;
-
-  const classes = context.styleManager.render(styleSheet);
 
   const wrappedChildren = React.Children.map(children, currentChild => {
     if (React.isValidElement(currentChild) && currentChild.type.muiName === 'ListSubheader') {
@@ -84,6 +83,10 @@ GridList.propTypes = {
    */
   children: PropTypes.node.isRequired,
   /**
+   * Useful to extend the style applied to components.
+   */
+  classes: PropTypes.object,
+  /**
    * The CSS `className` of the root element.
    */
   className: PropTypes.string,
@@ -113,6 +116,4 @@ GridList.defaultProps = {
   component: 'div',
 };
 
-GridList.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
-};
+export default withStyles(styleSheet)(GridList);

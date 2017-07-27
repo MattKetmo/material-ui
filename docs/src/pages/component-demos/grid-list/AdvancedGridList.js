@@ -1,8 +1,8 @@
 // @flow weak
 
 import React from 'react';
-import { createStyleSheet } from 'material-ui/styles';
-import customPropTypes from 'material-ui/utils/customPropTypes';
+import PropTypes from 'prop-types';
+import { createStyleSheet, withStyles } from 'material-ui/styles';
 import { GridList, GridTile, GridTileTitlebar } from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import StarBorderIcon from 'material-ui-icons/StarBorder';
@@ -44,8 +44,9 @@ const styleSheet = createStyleSheet('AdvancedGridList', () => ({
  *   },
  * ];
  */
-export default function AdvancedGridList(props, context) {
-  const classes = context.styleManager.render(styleSheet);
+function AdvancedGridList(props) {
+  const classes = props.classes;
+
   return (
     <div className={classes.container}>
       <GridList cellHeight={200} padding={1} className={classes.gridList}>
@@ -70,6 +71,8 @@ export default function AdvancedGridList(props, context) {
   );
 }
 
-AdvancedGridList.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
+AdvancedGridList.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
+
+export default withStyles(styleSheet)(AdvancedGridList);
